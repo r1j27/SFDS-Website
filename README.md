@@ -75,9 +75,6 @@ The pipeline includes the following stages:
 1. **Clone**: Clones the repository
 2. **Install Dependencies**: Installs npm dependencies
 3. **Lint**: Runs ESLint to check code quality
-4. **Test**: Runs tests (if configured)
-5. **Build**: Builds the Vite app
-6. **Security Scan**: Performs npm audit for security vulnerabilities
 7. **Docker Build**: Builds the Docker image
 8. **Docker Push**: Pushes the Docker image to Docker Hub
 9. **Deploy to Development/Production**: Deploys to the appropriate environment based on branch
