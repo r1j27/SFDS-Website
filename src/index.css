@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-gray-800 antialiased;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-500;
+  }
+
+  .btn-secondary {
+    @apply btn bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-600;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-orange-500 text-orange-500 hover:bg-orange-50 focus:ring-orange-500;
+  }
+
+  .input {
+    @apply w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:border-orange-500 focus:ring-orange-500;
+  }
+
+  .card {
+    @apply bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg;
+  }
+
+  .food-card {
+    @apply card hover:scale-[1.02];
+  }
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
