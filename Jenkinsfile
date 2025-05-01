@@ -1,65 +1,71 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:16-alpine'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
+    
     environment {
         DOCKER_REGISTRY = 'docker.io'
         DOCKER_IMAGE = 'r1j27/sfds-website'
-        DOCKER_CREDENTIALS_ID = 'dockerhub-creds'
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
     }
+    
     stages {
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
+        
         stage('Install') {
             steps {
                 sh 'npm install'
             }
         }
+        
         stage('Lint') {
             steps {
                 sh 'npm run lint || true'
             }
         }
+        
         stage('Build') {
             steps {
                 sh 'npm run build'
             }
         }
+        
+        stage('Docker Login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+        
         stage('Docker Build') {
             steps {
-                script {
-                    app = docker.build("${DOCKER_IMAGE}:${env.BUILD_NUMBER}")
-                }
+                sh 'docker build -t $DOCKER_IMAGE:$BUILD_NUMBER .'
+                sh 'docker tag $DOCKER_IMAGE:$BUILD_NUMBER $DOCKER_IMAGE:latest'
             }
         }
+        
         stage('Docker Push') {
             steps {
-                script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", DOCKER_CREDENTIALS_ID) {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
+                sh 'docker push $DOCKER_IMAGE:$BUILD_NUMBER'
+                sh 'docker push $DOCKER_IMAGE:latest'
             }
         }
+        
         stage('Deploy Development') {
             when {
                 branch 'main'
             }
             steps {
                 sh 'chmod +x ./deploy.sh'
-                sh "./deploy.sh dev ${env.BUILD_NUMBER}"
+                sh "./deploy.sh dev ${BUILD_NUMBER}"
             }
         }
     }
+    
     post {
         always {
+            sh 'docker logout'
             cleanWs()
         }
     }
