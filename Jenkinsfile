@@ -8,21 +8,45 @@ pipeline {
             }
         }
         
+        stage('Setup Node') {
+            steps {
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    nvm use 16 || nvm install 16
+                    node -v
+                    npm -v
+                '''
+            }
+        }
+        
         stage('Install') {
             steps {
-                sh 'npm install'
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    npm install
+                '''
             }
         }
         
         stage('Lint') {
             steps {
-                sh 'npm run lint || true'
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    npm run lint || true
+                '''
             }
         }
         
         stage('Build') {
             steps {
-                sh 'npm run build'
+                sh '''
+                    export NVM_DIR="$HOME/.nvm"
+                    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+                    npm run build
+                '''
             }
         }
         
