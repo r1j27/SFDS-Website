@@ -1,5 +1,5 @@
 # Stage 1: Build the Vite app
-FROM node:18.18.2-alpine3.18 AS builder
+FROM node:16-alpine AS builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Serve the build with Nginx
-FROM nginx:1.25.2-alpine
+FROM nginx:stable-alpine
 
 # Copy the Vite build output to Nginx's public folder
 COPY --from=builder /app/dist /usr/share/nginx/html

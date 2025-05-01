@@ -1,0 +1,13 @@
+# Simple single-stage build
+FROM busybox
+
+WORKDIR /app
+
+# Copy your application files
+COPY . .
+
+# Expose port 80
+EXPOSE 80
+
+# Run a simple HTTP server
+CMD ["busybox", "httpd", "-f", "-p", "80", "-h", "/app"] 

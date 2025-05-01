@@ -10,7 +10,7 @@ set -e
 
 ENVIRONMENT=$1
 VERSION=$2
-IMAGE_NAME="ch1it1ny1r1j/sfds-website"
+IMAGE_NAME="r1j27/sfds-website"
 
 if [ -z "$ENVIRONMENT" ]; then
   echo "Error: Environment not specified"
@@ -28,7 +28,7 @@ echo "🚀 Deploying SFDS-Website to $ENVIRONMENT environment (version: $VERSION
 if [ "$ENVIRONMENT" == "dev" ]; then
   # Development deployment configuration
   CONTAINER_NAME="sfds-website-dev"
-  PORT=8080
+  PORT=8081
   echo "Deploying to development environment on port $PORT"
 
 elif [ "$ENVIRONMENT" == "prod" ]; then
